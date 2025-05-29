@@ -1,0 +1,229 @@
+/* Toàn bộ trang */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fef6ee; /* 🎨 màu nền kem giống logo */
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Màu chính chủ đạo: Xanh dương Bách Khoa */
+    --chat--color-primary: #007BFF;
+    --chat--color-primary-shade-50: #0069d9;
+    --chat--color-primary-shade-100: #0056b3;
+
+    /* Màu phụ: Xanh biển tươi */
+    --chat--color-secondary: #20b69e;
+    --chat--color-secondary-shade-50: #1ca08a;
+
+    /* Màu cơ bản */
+    --chat--color-white: #ffffff;
+    --chat--color-light: #f2f4f8;
+    --chat--color-light-shade-50: #e6e9f1;
+    --chat--color-light-shade-100: #c2c5cc;
+    --chat--color-medium: #d2d4d9;
+    --chat--color-dark: #101330;
+    --chat--color-disabled: #777980;
+    --chat--color-typing: #404040;
+
+    /* Kích thước & bố cục */
+    --chat--spacing: 1rem;
+    --chat--border-radius: 0.5rem;
+    --chat--transition-duration: 0.2s;
+
+    --chat--window--width: 400px;
+    --chat--window--height: 600px;
+
+    /* Header khung chat */
+    --chat--header-height: auto;
+    --chat--header--padding: var(--chat--spacing);
+    --chat--header--background: var(--chat--color-primary);
+    --chat--header--color: var(--chat--color-white);
+    --chat--heading--font-size: 1.4em;
+    --chat--subtitle--font-size: 0.9em;
+    --chat--subtitle--line-height: 1.6;
+
+    /* Tin nhắn */
+    --chat--message--font-size: 1rem;
+    --chat--message--padding: var(--chat--spacing);
+    --chat--message--border-radius: var(--chat--border-radius);
+    --chat--message-line-height: 1.6;
+
+    --chat--message--bot--background: var(--chat--color-white);
+    --chat--message--bot--color: var(--chat--color-dark);
+    --chat--message--bot--border: 1px solid #ddd;
+
+    --chat--message--user--background: var(--chat--color-primary);
+    --chat--message--user--color: var(--chat--color-white);
+    --chat--message--user--border: none;
+
+    --chat--message--pre--background: #f8f8f8;
+
+    /* Nút gửi / icon */
+    --chat--toggle--background: var(--chat--color-primary);
+    --chat--toggle--hover--background: var(--chat--color-primary-shade-50);
+    --chat--toggle--active--background: var(--chat--color-primary-shade-100);
+    --chat--toggle--color: var(--chat--color-white);
+    --chat--toggle--size: 60px;
+
+    /* Textarea input */
+    --chat--textarea--height: 48px;
+}
+
+/* Thanh công cụ trên cùng */
+.toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #007BFF;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.toolbar .left {
+    flex: 1;
+    cursor: pointer;
+}
+
+.toolbar .center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.toolbar .toolbar-logo {
+    height: 50px;
+}
+
+.toolbar .right a {
+    color: white;
+    background: #dc3545;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+}
+
+/* Hiển thị logo giữa trang */
+.center-logo {
+    margin-top: 80px;
+    text-align: center;
+}
+
+.center-logo img {
+    max-width: 180px;
+    height: auto;
+    opacity: 0.95;
+}
+
+/* Hộp thoại cập nhật thông tin */
+.modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 300px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+}
+
+.modal-content label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+}
+
+.modal-content button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.modal-content .close {
+    float: right;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Tuỳ chỉnh giao diện chat N8N */
+.n8n-chat-widget header {
+    background-color: var(--chat--color-primary) !important;
+    color: var(--chat--color-white) !important;
+}
+
+.n8n-chat-widget .n8n-chat-message.user {
+    background-color: var(--chat--color-primary) !important;
+    color: var(--chat--color-white) !important;
+}
+
+.n8n-chat-widget .n8n-chat-message.bot {
+    background-color: var(--chat--color-white) !important;
+    color: var(--chat--color-dark) !important;
+    border: 1px solid #ddd !important;
+}
+
+.n8n-chat-widget .n8n-chat-send-button {
+    background-color: var(--chat--color-primary) !important;
+    color: var(--chat--color-white) !important;
+}
+
+.n8n-chat-widget input[type="text"] {
+    height: var(--chat--textarea--height);
+}
+
+.feedback-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.modal textarea {
+    width: 95%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat với BKute Bot</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+    <style>
+        :root {
+            --chat--color-primary: #007BFF;
+            --chat--color-primary-shade-100: #0056b3;
+        }
+
+        .n8n-chat-widget header {
+            background-color: var(--chat--color-primary) !important;
+            color: white !important;
+        }
+
+        .n8n-chat-widget .n8n-chat-send-button {
+            background-color: var(--chat--color-primary) !important;
+            color: white !important;
+        }
+
+        .n8n-chat-widget .n8n-chat-message.user {
+            background-color: var(--chat--color-primary) !important;
+            color: white !important;
+        }
+
+        .n8n-chat-widget .n8n-chat-message.bot {
+            background-color: white !important;
+            color: black !important;
+            border: 1px solid #ddd !important;
+        }
+
+        .n8n-chat-widget input[type="text"] {
+            height: 48px;
+        }
+
+        #n8n-chat {
+            margin: 100px auto;
+            max-width: 400px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+        }
+
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-content input[type="text"],
+        .modal-content input[type="file"],
+        .modal-content textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .modal-content button {
+            background-color: var(--chat--color-primary);
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background-color: var(--chat--color-primary-shade-100);
+        }
+
+        .toolbar .left {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            gap: 10px;
+        }
+
+        .toolbar .left img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .feedback-button {
+            position: fixed;
+            bottom: 20px;
+            left: 10px;
+            background-color: #ffc107;
+            color: black;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .admin-button {
+            position: fixed;
+            bottom: 100px;
+            right: 10px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Thanh công cụ -->
+    <div class="toolbar">
+        <div class="left" onclick="toggleModal()">
+            <img src="{{ url_for('static', filename='uploads/' ~ user.avatar) }}" alt="Avatar">
+            <span>👋 Xin chào, {{ user.name }}</span>
+        </div>
+        <div class="center">
+            <img src="{{ url_for('static', filename='logo_hcmut.png') }}" alt="Logo" class="toolbar-logo">
+        </div>
+        <div class="right">
+            <a href="/logout">Đăng xuất</a>
+        </div>
+    </div>
+
+    <div class="center-logo">
+        <img src="{{ url_for('static', filename='BKUTE_icon.png') }}" alt="BKUTE Icon">
+    </div>
+
+    <div id="n8n-chat"></div>
+
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+        createChat({
+            webhookUrl: 'http://localhost:5678/webhook/c736eac9-607a-42f6-9ea8-259ddb4a9b20/chat',
+            webhookConfig: { method: 'POST', headers: {} },
+            target: '#n8n-chat',
+            mode: 'window',
+            chatInputKey: 'chatInput',
+            chatSessionKey: 'sessionId',
+            metadata: {},
+            showWelcomeScreen: false,
+            defaultLanguage: 'vi',
+            initialMessages: [
+                'Xin chào! Tôi là BKute - trợ lý ảo thân thiện của Đại học Bách Khoa TP.HCM.',
+                'Bạn cần mình giúp gì nào? 👋'
+            ],
+            i18n: {
+                vi: {
+                    title: 'Xin chào! 👋',
+                    subtitle: 'Hãy trò chuyện cùng trợ lý ảo BKute nhé!',
+                    getStarted: 'Bắt đầu mới',
+                    inputPlaceholder: 'Nhập câu hỏi của bạn...',
+                },
+            },
+        });
+    </script>
+
+    <!-- Modal cập nhật thông tin -->
+    <div id="updateModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="toggleModal()">&times;</span>
+            <h3>Cập nhật thông tin</h3>
+            <form method="POST" action="/update_profile" enctype="multipart/form-data">
+                <label>Họ tên:</label>
+                <input type="text" name="fullname" value="{{ user.name }}">
+                <label>Ảnh đại diện:</label>
+                <input type="file" name="avatar">
+                <button type="submit">Lưu thay đổi</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal góp ý -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="toggleFeedback()">&times;</span>
+            <h3>Góp ý cho BKute</h3>
+            <form method="POST" action="/submit_feedback">
+                <textarea name="feedback" placeholder="Nhập góp ý của bạn..." required></textarea>
+                <button type="submit">Gửi góp ý</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script toggle modal -->
+    <script>
+        function toggleModal() {
+            const modal = document.getElementById("updateModal");
+            modal.style.display = modal.style.display === "block" ? "none" : "block";
+        }
+        function toggleFeedback() {
+            const modal = document.getElementById("feedbackModal");
+            modal.style.display = modal.style.display === "block" ? "none" : "block";
+        }
+        window.onclick = function(event) {
+            const updateModal = document.getElementById("updateModal");
+            const feedbackModal = document.getElementById("feedbackModal");
+            if (event.target === updateModal) updateModal.style.display = "none";
+            if (event.target === feedbackModal) feedbackModal.style.display = "none";
+        }
+    </script>
+
+    <!-- Nút góp ý -->
+    <button class="feedback-button" onclick="toggleFeedback()">✉️ Góp ý</button>
+
+    <!-- Nút xem góp ý cho admin -->
+    {% if user.mssv == '2111464' %}
+        <a href="{{ url_for('view_feedback') }}" class="admin-button">📄 Xem góp ý</a>
+    {% endif %}
+
+</body>
+</html>

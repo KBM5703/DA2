@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+    <meta charset="UTF-8">
+    <title>BKute-HCMUT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: url('{{ url_for('static', filename='background.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9); /* trắng mờ để nổi bật */
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            width: 320px;
+            text-align: center;
+        }
+
+        .login-container img {
+            max-width: 120px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .login-container h2 {
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .login-container button {
+            background-color: #007BFF;
+            color: white;
+            padding: 12px;
+            border: none;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .login-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .login-container a {
+            display: block;
+            margin-top: 14px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .login-container a:hover {
+            text-decoration: underline;
+        }
+
+        .login-container p {
+            margin-bottom: 10px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <img src="{{ url_for('static', filename='logo_hcmut.jpg') }}" alt="HCMUT Logo">
+        <h2>Đăng nhập</h2>
+
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+
+        <form method="POST" action="/login">
+            <input type="text" name="mssv" placeholder="Mã số sinh viên" required>
+            <input type="password" name="matkhau" placeholder="Mật khẩu" required>
+            <button type="submit">Đăng nhập</button>
+        </form>
+
+        <a href="/register">Chưa có tài khoản? Đăng ký</a>
+    </div>
+
+</body>
+</html>
