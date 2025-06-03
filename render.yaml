@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: n8n-chatbot
+    env: docker
+    plan: free
+    repo: https://github.com/YOUR_USERNAME/YOUR_REPO
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: N8N_BASIC_AUTH_USER
+        value: admin
+      - key: N8N_BASIC_AUTH_PASSWORD
+        value: password
+      - key: N8N_HOST
+        value: n8n-chatbot.onrender.com
+      - key: N8N_PORT
+        value: 10000
+      - key: WEBHOOK_TUNNEL_URL
+        value: https://n8n-chatbot.onrender.com
